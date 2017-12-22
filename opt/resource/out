@@ -48,6 +48,11 @@ def put(src):
     if not (filename or pattern):
         message("Need at least 'file' or 'pattern' parameter.")
 
+    message("src:                {}".format(src))
+    message("filename:           {}".format(filename))
+    message("pattern:            {}".format(pattern))
+    message("srcfiles:           {}".format(os.listdir(src)))
+
     filepath = get_filepath(src, filename, pattern)
     filename = os.path.basename(filepath)
     if not filepath:
