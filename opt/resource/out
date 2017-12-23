@@ -54,9 +54,12 @@ def put(src):
     message("srcfiles:           {}".format(os.listdir(src)))
 
     filepath = get_filepath(src, filename, pattern)
+    message("fpath:           {}".format(os.listdir(filepath)))
+
     filename = os.path.basename(filepath)
     if not filepath:
         sys.exit(1)
+    message("dirname:           {}".format(os.listdir(os.path.dirname(filepath))))
 
     meta = get_metadata(filepath)
     meta[':action'] = 'submit'
