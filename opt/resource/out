@@ -83,8 +83,12 @@ def put(src):
 
 
 def get_metadata(path):
+    message("path:           {}".format(path))
     info = pkginfo.get_metadata(path)
-    return {attr: getattr(info, attr) for attr in info}
+    message("info:           {}".format(info))
+    meta = {attr: getattr(info, attr) for attr in info}
+    message("meta:           {}".format(meta))
+    return meta
 
 
 if __name__ == '__main__':
