@@ -63,6 +63,8 @@ def put(src):
     message("dirname:           {}".format(os.listdir(os.path.dirname(filepath))))
 
     meta = get_metadata(filepath)
+    message("META:                {}".format(meta))
+
     meta[':action'] = 'submit'
     message("Register {}-{} to {}".format(meta['name'], meta['version'], url))
     response = requests.post(url, meta, headers=headers)
