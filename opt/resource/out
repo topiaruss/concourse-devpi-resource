@@ -118,21 +118,21 @@ def put(src):
     message("dirname:           {}".format(os.listdir(os.path.dirname(filepath))))
     message("auth:           {}".format(auth))
 
-    ret = subprocess.run(
-        [
-            "devpi",
-            "login",
-            payload['source']['username'],
-            "--password=%s" % payload['source']["password"]
-        ]
-    )
-
-    ret = subprocess.run(
-        [
-            "devpi",
-            "upload",
-        ]
-    )
+    # ret = subprocess.run(
+    #     [
+    #         "devpi",
+    #         "login",
+    #         payload['source']['username'],
+    #         "--password=%s" % payload['source']["password"]
+    #     ]
+    # )
+    #
+    # ret = subprocess.run(
+    #     [
+    #         "devpi",
+    #         "upload",
+    #     ]
+    # )
 
     if 0:
         meta = get_metadata(filepath)
