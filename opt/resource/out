@@ -154,3 +154,4 @@ def get_metadata(path):
 if __name__ == '__main__':
     message("sys.argv[1]:        {}".format(sys.argv[1]))
     put(sys.argv[1])
+    message("DONE")
