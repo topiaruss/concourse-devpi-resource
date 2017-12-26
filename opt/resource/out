@@ -5,6 +5,7 @@ import json
 import os
 import pkginfo
 import sys
+import subprocess
 
 from devpi_common.metadata import get_pyversion_filetype
 import requests
@@ -34,7 +35,7 @@ def get_filepath(src, filename, pattern):
     return filepath
 
 
-def put(src):
+def put0(src):
     payload = get_payload()
     message("PAYLOAD:          {}".format(payload))
     url = get_index_url(payload)
@@ -88,6 +89,78 @@ def put(src):
     }))
 
 
+def put(src):
+    payload = get_payload()
+    message("PAYLOAD:          {}".format(payload))
+    url = get_index_url(payload)
+    auth = get_auth(payload)
+
+    message("Using dir:          {}".format(src))
+    message("Using index-url:    {}".format(url))
+
+    headers = {'X-Devpi-Auth': auth}
+    filename = payload['params'].get('file')
+    pattern = payload['params'].get('fileglob')
+    if not (filename or pattern):
+        message("Need at least 'file' or 'pattern' parameter.")
+
+    message("src:                {}".format(src))
+    message("filename:           {}".format(filename))
+    message("pattern:            {}".format(pattern))
+    message("srcfiles:           {}".format(os.listdir(src)))
+
+    filepath = get_filepath(src, filename, pattern)
+    message("fpath:           {}".format(os.listdir(filepath)))
+
+    filename = os.path.basename(filepath)
+    if not filepath:
+        sys.exit(1)
+    message("dirname:           {}".format(os.listdir(os.path.dirname(filepath))))
+    message("auth:           {}".format(auth))
+
+    ret = subprocess.run(
+        [
+            "devpi",
+            "login",
+            src["username"],
+            "--password=%s" % src["username"]
+        ]
+    )
+
+    ret = subprocess.run(
+        [
+            "devpi",
+            "upload",
+        ]
+    )
+
+    if 0:
+        meta = get_metadata(filepath)
+        message("META:                {}".format(meta))
+
+        meta[':action'] = 'submit'
+        message("Register {}-{} to {}".format(meta['name'], meta['version'], url))
+        response = requests.post(url, meta, headers=headers)
+        response.raise_for_status()
+
+        meta['pyversion'], meta['filetype'] = get_pyversion_filetype(os.path.basename(filename))
+        meta[':action'] = 'file_upload'
+        files = {'content': (filename, open(filepath, 'rb'))}
+        response = requests.post(url, meta, headers=headers, files=files)
+        message("Upload {} to {}".format(filename, url))
+        response.raise_for_status()
+
+        print(json.dumps({
+            'version': {'version': meta['version']},
+            'metadata': [
+                {'name': 'index', 'value': payload['source']['index']},
+                {'name': 'name', 'value': meta['name']},
+                {'name': 'author', 'value': meta['author']},
+                {'name': 'file', 'value': filename},
+            ]
+        }))
+
+
 def get_metadata(path):
     message("path:           {}".format(path))
     info = pkginfo.get_metadata(path)
@@ -98,4 +171,5 @@ def get_metadata(path):
 
 
 if __name__ == '__main__':
+    message("sys.argv[1]:        {}".format(sys.argv[1]))
     put(sys.argv[1])
