@@ -93,7 +93,7 @@ def put(src):
     payload = get_payload()
     message("PAYLOAD:          {}".format(payload))
     url = get_index_url(payload)
-    auth = get_auth(payload)
+    auth = 'xx'
 
     message("Using dir:          {}".format(src))
     message("Using index-url:    {}".format(url))
