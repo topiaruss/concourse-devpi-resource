@@ -122,8 +122,8 @@ def put(src):
         [
             "devpi",
             "login",
-            src["username"],
-            "--password=%s" % src["username"]
+            payload['source']['username'],
+            "--password=%s" % payload['source']["password"]
         ]
     )
 
