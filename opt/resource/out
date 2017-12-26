@@ -118,28 +118,23 @@ def put(src):
     #message("dirname:           {}".format(os.listdir(os.path.dirname(filepath))))
     #message("auth:           {}".format(auth))
 
-    message("A: ")
-
     ret = subprocess.run(
         [
             "devpi",
             "login",
             payload['source']['username'],
             "--password=%s" % payload['source']["password"]
-        ]
+        ], stdout=subprocess.PIPE
     )
-
-    message("B: ")
+    message("login returned:   {}".format(ret))
 
     ret = subprocess.run(
         [
             "devpi",
             "upload",
-        ]
+        ], stdout=subprocess.PIPE
     )
-
-    message("C: ")
-
+    message("upload returned:   {}".format(ret))
 
     print(json.dumps({
         'version': {'version': 'v0.1dummy'},
@@ -148,7 +143,7 @@ def put(src):
             {'name': 'name', 'value': 'msgflow'},
             {'name': 'author', 'value': 'russ'},
             {'name': 'file', 'value': 'file'},
-        ]
+        ],
     }))
 
 
