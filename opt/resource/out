@@ -120,23 +120,23 @@ def put(src):
 
     message("A: ")
 
-    # ret = subprocess.run(
-    #     [
-    #         "devpi",
-    #         "login",
-    #         payload['source']['username'],
-    #         "--password=%s" % payload['source']["password"]
-    #     ]
-    # )
-    #
-    # message("B: ")
-    #
-    # ret = subprocess.run(
-    #     [
-    #         "devpi",
-    #         "upload",
-    #     ]
-    # )
+    ret = subprocess.run(
+        [
+            "devpi",
+            "login",
+            payload['source']['username'],
+            "--password=%s" % payload['source']["password"]
+        ]
+    )
+
+    message("B: ")
+
+    ret = subprocess.run(
+        [
+            "devpi",
+            "upload",
+        ]
+    )
 
     message("C: ")
 
