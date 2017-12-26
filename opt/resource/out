@@ -98,41 +98,41 @@ def put(src):
     message("Using dir:          {}".format(src))
     message("Using index-url:    {}".format(url))
 
-    headers = {'X-Devpi-Auth': auth}
+    #headers = {'X-Devpi-Auth': auth}
     filename = payload['params'].get('file')
-    pattern = payload['params'].get('fileglob')
-    if not (filename or pattern):
-        message("Need at least 'file' or 'pattern' parameter.")
+    #pattern = payload['params'].get('fileglob')
+    #if not (filename or pattern):
+    #    message("Need at least 'file' or 'pattern' parameter.")
 
     message("src:                {}".format(src))
     message("filename:           {}".format(filename))
-    message("pattern:            {}".format(pattern))
+    #message("pattern:            {}".format(pattern))
     message("srcfiles:           {}".format(os.listdir(src)))
 
-    filepath = get_filepath(src, filename, pattern)
-    message("fpath:           {}".format(os.listdir(filepath)))
+    #filepath = get_filepath(src, filename, pattern)
+    #message("fpath:           {}".format(os.listdir(filepath)))
 
-    filename = os.path.basename(filepath)
-    if not filepath:
-        sys.exit(1)
-    message("dirname:           {}".format(os.listdir(os.path.dirname(filepath))))
-    message("auth:           {}".format(auth))
+    #filename = os.path.basename(filepath)
+    #if not filepath:
+    #    sys.exit(1)
+    #message("dirname:           {}".format(os.listdir(os.path.dirname(filepath))))
+    #message("auth:           {}".format(auth))
 
-    # ret = subprocess.run(
-    #     [
-    #         "devpi",
-    #         "login",
-    #         payload['source']['username'],
-    #         "--password=%s" % payload['source']["password"]
-    #     ]
-    # )
-    #
-    # ret = subprocess.run(
-    #     [
-    #         "devpi",
-    #         "upload",
-    #     ]
-    # )
+    ret = subprocess.run(
+        [
+            "devpi",
+            "login",
+            payload['source']['username'],
+            "--password=%s" % payload['source']["password"]
+        ]
+    )
+
+    ret = subprocess.run(
+        [
+            "devpi",
+            "upload",
+        ]
+    )
 
     if 0:
         meta = get_metadata(filepath)
