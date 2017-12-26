@@ -118,6 +118,8 @@ def put(src):
     #message("dirname:           {}".format(os.listdir(os.path.dirname(filepath))))
     #message("auth:           {}".format(auth))
 
+    message("A: ")
+
     ret = subprocess.run(
         [
             "devpi",
@@ -127,12 +129,16 @@ def put(src):
         ]
     )
 
+    message("B: ")
+
     ret = subprocess.run(
         [
             "devpi",
             "upload",
         ]
     )
+
+    message("C: ")
 
 
 
