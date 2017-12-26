@@ -141,6 +141,16 @@ def put(src):
     message("C: ")
 
 
+    print(json.dumps({
+        'version': {'version': 'v0.1dummy'},
+        'metadata': [
+            {'name': 'index', 'value': 'team/dev'},
+            {'name': 'name', 'value': 'msgflow'},
+            {'name': 'author', 'value': 'russ'},
+            {'name': 'file', 'value': 'file'},
+        ]
+    }))
+
 
 def get_metadata(path):
     message("path:           {}".format(path))
