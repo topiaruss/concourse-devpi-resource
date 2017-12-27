@@ -125,7 +125,9 @@ def put(src):
     message("login returned:   {}".format(ret))
 
     proc = subprocess.Popen('cd %s; devpi upload' % (filename,),
-                            stdout=subprocess.PIPE, shell=True)
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.PIPE,
+                            shell=True)
     proc_stdout = proc.communicate()[0].strip()
     proc_stderr = proc.communicate()[1].strip()
     message("upload stdout:   {}".format(proc_stdout))
