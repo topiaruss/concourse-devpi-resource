@@ -128,8 +128,9 @@ def put(src):
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE,
                             shell=True)
-    proc_stdout = proc.communicate()[0].strip()
-    proc_stderr = proc.communicate()[1].strip()
+    results = proc.communicate()
+    proc_stdout = results[0].strip()
+    proc_stderr = results[1].strip()
     message("upload stdout:   {}".format(proc_stdout))
     message("upload stderr:   {}".format(proc_stderr))
 
