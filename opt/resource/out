@@ -124,13 +124,12 @@ def put(src):
     )
     message("login returned:   {}".format(ret))
 
-    ret = subprocess.run(
-        [
-            "devpi",
-            "upload",
-        ], stdout=subprocess.PIPE
-    )
-    message("upload returned:   {}".format(ret))
+    proc = subprocess.run('cd %s; devpi upload' % (filename,),
+                          stdout=subprocess.PIPE, shell=True)
+    proc_stdout = proc.communicate()[0].strip()
+    proc_stderr = proc.communicate()[1].strip()
+    message("upload stdout:   {}".format(proc_stdout))
+    message("upload stderr:   {}".format(proc_stderr))
 
     print(json.dumps({
         'version': {'version': 'v0.1dummy'},
