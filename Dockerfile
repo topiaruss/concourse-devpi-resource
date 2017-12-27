@@ -1,5 +1,5 @@
 FROM python:3-alpine
-MAINTAINER mail@martindomke.net
+MAINTAINER topiaruss@gmail.com
 RUN apk update \
     && apk add --virtual \
         git

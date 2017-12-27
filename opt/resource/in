@@ -10,10 +10,15 @@ from common import get_package_url
 from common import get_payload
 from common import get_version
 
+def message(text):
+    print(text, file=sys.stderr)
+
 
 def get(dst):
     print("Using dir {}".format(dst), file=sys.stderr)
     payload = get_payload()
+    message("PAYLOAD:          {}".format(payload))
+
     url = get_package_url(payload)
 
     if 'version' in payload.get('params', {}):
@@ -25,6 +30,7 @@ def get(dst):
 
     response = requests.get(url, headers={'accept': 'application/json'}).json()
     download_link = response['result']['+links'][0]['href']
+    message("RESPONSE:          {}".format(response))
     filename = os.path.basename(download_link)
     package = requests.get(download_link)
     with open(os.path.join(dst, filename), 'wb') as fp:
