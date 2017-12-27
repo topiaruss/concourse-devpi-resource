@@ -124,7 +124,8 @@ def put(src):
     )
     message("login returned:   {}".format(ret))
 
-    proc = subprocess.Popen('ls -l /tmp/build/put; cd %s; devpi upload' % (filename,),
+    package_dir = os.path.join(src, filename)
+    proc = subprocess.Popen('cd %s; devpi upload' % (package_dir,),
                             stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE,
                             shell=True)
