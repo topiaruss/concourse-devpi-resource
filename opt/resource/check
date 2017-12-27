@@ -11,6 +11,8 @@ from common import get_payload
 from common import get_version
 from common import get_versioning_scheme
 
+def message(text):
+    print(text, file=sys.stderr)
 
 class Version:
     def __init__(self, v, scheme):
@@ -33,8 +35,10 @@ def check():
     scheme = get_versioning_scheme(payload)
 
     response = requests.get(url, headers={'accept': 'application/json'}).json()
+    message('RESPONSE:      {}'.format(response))
     versions = sorted([Version(v, scheme) for v in response['result'].keys()])
     result = [{'version': v.vstring} for v in versions]
+    message('result:      {}'.format(result))
 
     if versions and (version is None or version == versions[-1].vstring):
         print(json.dumps([result[-1]]))

@@ -29,8 +29,8 @@ def get(dst):
     url += '/' + version
 
     response = requests.get(url, headers={'accept': 'application/json'}).json()
-    download_link = response['result']['+links'][0]['href']
     message("RESPONSE:          {}".format(response))
+    download_link = response['result']['+links'][0]['href']
     filename = os.path.basename(download_link)
     package = requests.get(download_link)
     with open(os.path.join(dst, filename), 'wb') as fp:
