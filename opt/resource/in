@@ -27,6 +27,7 @@ def get(dst):
         version = get_version(payload)
 
     url += '/' + version
+    message("URL:          {}".format(url))
 
     response = requests.get(url, headers={'accept': 'application/json'}).json()
     message("RESPONSE:          {}".format(response))
