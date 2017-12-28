@@ -1,7 +1,7 @@
 from base64 import b64encode
 import json
 import tempfile
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 import sys
 
 
@@ -26,6 +26,19 @@ def get_index_url(source):
     index = source['index']
     if not uri.endswith('/'):
         uri += '/'
+    if not index.endswith('/'):
+        index += '/'
+    return urljoin(uri, index)
+
+
+@with_source
+def get_index_url_with_userpass(source):
+    uri = source['uri']
+    index = source['index']
+    parsed = urlparse(source['uri'])
+    uri = "{}://{}:{}@{}".format(parsed.scheme,
+                                 source['username'], source['password'],
+                                 parsed.netloc)
     if not index.endswith('/'):
         index += '/'
     return urljoin(uri, index)

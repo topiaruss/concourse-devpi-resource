@@ -12,6 +12,7 @@ import requests
 
 from common import get_auth
 from common import get_index_url
+from common import get_index_url_with_userpass
 from common import get_payload
 
 
@@ -89,6 +90,13 @@ def put0(src):
     }))
 
 
+def parse_upload_result(result_lines):
+    result_lines = result_lines.splitlines(result_lines)
+    reg_line = [r for r in result_lines if r.startswith('register ')][0]
+    version = reg_line.split()[1]
+    return dict(version=version)
+
+
 def put(src):
     payload = get_payload()
     message("PAYLOAD:          {}".format(payload))
@@ -104,12 +112,15 @@ def put(src):
     message("filename:           {}".format(filename))
     message("srcfiles:           {}".format(os.listdir(src)))
 
+    userpass_uri = get_index_url_with_userpass()
+
     ret = subprocess.run(
         [
             "devpi",
             "use",
-            "http://{username}:{password}@devpi:3141/{index}".format(
-                **payload['source']),
+            # "http://{username}:{password}@devpi:3141/{index}".format(
+            #     **payload['source']),
+            userpass_uri
         ], stdout=subprocess.PIPE
     )
     message("use returned:   {}".format(ret))
@@ -135,13 +146,15 @@ def put(src):
     message("upload stdout:   {}".format(proc_stdout))
     message("upload stderr:   {}".format(proc_stderr))
 
+    upload_result = parse_upload_result(proc_stdout.decode("utf-8", "replace"))
+
     print(json.dumps({
-        'version': {'version': 'v0.1dummy'},
+        'version': {'version': upload_result['version']},
         'metadata': [
-            {'name': 'index', 'value': 'team/dev'},
-            {'name': 'name', 'value': 'msgflow'},
-            {'name': 'author', 'value': 'russ'},
-            {'name': 'file', 'value': 'file'},
+            {'name': 'index', 'value': payload['index']},
+            {'name': 'name', 'value': payload['package']},
+            {'name': 'author', 'value': payload['username']},
+            {'name': 'file', 'value': payload['params']['file']},
         ],
     }))
 
