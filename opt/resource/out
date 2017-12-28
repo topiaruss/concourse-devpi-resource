@@ -90,10 +90,13 @@ def put0(src):
     }))
 
 
-def parse_upload_result(result_lines):
+def parse_upload_result(payload, result_lines):
     result_lines = result_lines.splitlines()
     reg_line = [r for r in result_lines if r.startswith('register ')][0]
     version = reg_line.split()[1]
+    pkg = payload['source']['package']
+    assert version.startswith(pkg)
+    version = version[len(pkg)+1:]
     return dict(version=version)
 
 
@@ -146,7 +149,8 @@ def put(src):
     message("upload stdout:   {}".format(proc_stdout))
     message("upload stderr:   {}".format(proc_stderr))
 
-    upload_result = parse_upload_result(proc_stdout.decode("utf-8", "replace"))
+    upload_result = parse_upload_result(payload,
+                                        proc_stdout.decode("utf-8", "replace"))
 
     print(json.dumps({
         'version': {'version': upload_result['version']},
