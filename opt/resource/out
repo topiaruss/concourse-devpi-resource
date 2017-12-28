@@ -151,9 +151,9 @@ def put(src):
     print(json.dumps({
         'version': {'version': upload_result['version']},
         'metadata': [
-            {'name': 'index', 'value': payload['index']},
-            {'name': 'name', 'value': payload['package']},
-            {'name': 'author', 'value': payload['username']},
+            {'name': 'index', 'value': payload['source']['index']},
+            {'name': 'name', 'value': payload['source']['package']},
+            {'name': 'author', 'value': payload['source']['username']},
             {'name': 'file', 'value': payload['params']['file']},
         ],
     }))
