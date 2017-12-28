@@ -91,7 +91,7 @@ def put0(src):
 
 
 def parse_upload_result(result_lines):
-    result_lines = result_lines.splitlines(result_lines)
+    result_lines = result_lines.splitlines()
     reg_line = [r for r in result_lines if r.startswith('register ')][0]
     version = reg_line.split()[1]
     return dict(version=version)
