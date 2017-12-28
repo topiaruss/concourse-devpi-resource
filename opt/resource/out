@@ -112,7 +112,7 @@ def put(src):
     message("filename:           {}".format(filename))
     message("srcfiles:           {}".format(os.listdir(src)))
 
-    userpass_uri = get_index_url_with_userpass()
+    userpass_uri = get_index_url_with_userpass(payload)
 
     ret = subprocess.run(
         [
